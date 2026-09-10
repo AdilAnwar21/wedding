@@ -1,20 +1,25 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
 import { MapPin, Clock, ChevronDown } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 
-// Reusable component for continuous scroll animations (parallax-like)
+// Reusable component for continuous scroll animations with physics (spring)
 const ScrollSection = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["0 1", "0.5 0.5"] // starts when top of element hits bottom of screen, ends when middle hits middle
+    // Start animation when top of element hits bottom of viewport. 
+    // Finish animation when top of element is 30% up from the bottom of viewport.
+    offset: ["0 1", "0.3 1"] 
   });
   
-  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  const y = useTransform(scrollYProgress, [0, 1], [100, 0]);
+  // Add a spring to make the scroll scrubbing feel buttery smooth and natural
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 25, mass: 0.5 });
+  
+  const opacity = useTransform(smoothProgress, [0, 1], [0, 1]);
+  const y = useTransform(smoothProgress, [0, 1], [80, 0]);
 
   return (
     <section ref={ref} className={`w-full flex flex-col items-center justify-center px-6 ${className}`}>
@@ -35,26 +40,28 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const MAP_URL = "https://www.google.com/maps/dir//City+Palace,+City+Place,+Wadakkanchery+Rd,+near+BSNL+Office,+Kechery,+Thrissur,+Eranellur,+Kerala+680501/@11.2145924,75.7952836,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3ba7eb031193fd99:0x6d037e92a97fc40!2m2!1d76.1227409!2d10.619994?entry=ttu&g_ep=EgoyMDI2MDkwNi4wIKXMDSoASAFQAw%3D%3D";
+  const MAP_URL = "https://www.google.com/maps/dir//CITY+PALACE+AUDITORIUM,+Beypore+Cheruvannur+Rd,+Beypore,+Kozhikode,+Kerala+673015/@11.2145924,75.7952836,15z/data=!3m2!4b1!5s0x3ba7eb030c1bda4d:0xb4522a6a71d1979a!4m8!4m7!1m0!1m5!1m1!1s0x3ba65103d7cfa563:0xce4ba61af981e7fd!2m2!1d75.8094376!2d11.1808954?entry=ttu&g_ep=EgoyMDI2MDkwNi4wIKXMDSoASAFQAw%3D%3D";
 
-  // For the first section (intro), we use a different scroll effect so it fades out as we scroll down
+  // For the first section (intro), we fade it out gracefully as you scroll down
   const introRef = useRef<HTMLElement>(null);
   const { scrollYProgress: introProgress } = useScroll({
     target: introRef,
-    offset: ["0 0", "1 0"] // starts when top hits top, ends when bottom hits top
+    offset: ["0 0", "0.8 0"] 
   });
-  const introOpacity = useTransform(introProgress, [0, 1], [1, 0]);
-  const introY = useTransform(introProgress, [0, 1], [0, -100]);
+  const smoothIntro = useSpring(introProgress, { stiffness: 100, damping: 25, mass: 0.5 });
+  const introOpacity = useTransform(smoothIntro, [0, 1], [1, 0]);
+  const introY = useTransform(smoothIntro, [0, 1], [0, -100]);
 
   // For the couple names, we can give them a slightly different scroll speed for a cool parallax effect
   const coupleRef = useRef<HTMLElement>(null);
   const { scrollYProgress: coupleProgress } = useScroll({
     target: coupleRef,
-    offset: ["0 1", "0.6 0.5"] 
+    offset: ["0 1", "0.6 1"] 
   });
-  const coupleOpacity = useTransform(coupleProgress, [0, 1], [0, 1]);
-  const groomX = useTransform(coupleProgress, [0, 1], [-100, 0]);
-  const brideX = useTransform(coupleProgress, [0, 1], [100, 0]);
+  const smoothCouple = useSpring(coupleProgress, { stiffness: 80, damping: 25, mass: 0.5 });
+  const coupleOpacity = useTransform(smoothCouple, [0, 1], [0, 1]);
+  const groomX = useTransform(smoothCouple, [0, 1], [-120, 0]);
+  const brideX = useTransform(smoothCouple, [0, 1], [120, 0]);
 
   return (
     <>
@@ -91,7 +98,7 @@ export default function Home() {
 
       <main className="relative min-h-screen bg-transparent overflow-hidden selection:bg-[#d4af37]/30 selection:text-emerald-900">
         
-        {/* Fixed Background Elements (Frames stay on screen while content scrolls) */}
+        {/* Fixed Background Elements */}
         <div className="fixed inset-0 pointer-events-none z-0 p-4 md:p-8">
           <div className="w-full h-full border-[1px] border-[#d4af37]/40 rounded-sm relative">
             <div className="absolute inset-2 border-[1px] border-[#d4af37]/20" />
@@ -145,7 +152,7 @@ export default function Home() {
           <ScrollSection className="min-h-[70vh] text-center space-y-12">
             <div>
               <h3 className="text-2xl md:text-4xl font-bold text-emerald-900 font-serif tracking-wide">Mr. Noushad M.P & Mrs. Afsath P.K</h3>
-              <p className="text-base md:text-lg text-emerald-800/80 italic mt-4 leading-relaxed max-w-md mx-auto">
+              <p className="text-base md:text-lg text-emerald-800/80 italic mt-4 leading-relaxed max-w-md mx-auto font-serif">
                 (MP House, Padinjare Kunnath Parambu,<br />Meenchanda Gate)
               </p>
             </div>
@@ -182,7 +189,7 @@ export default function Home() {
 
           {/* Section 4: Bride's Parents */}
           <ScrollSection className="min-h-[50vh] text-center">
-            <p className="text-lg md:text-xl text-emerald-800/80 italic max-w-lg mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-emerald-800/80 italic max-w-lg mx-auto leading-relaxed font-serif">
               (D/o Mr. Muhammed Ashraf, Mrs. Saleena.P,<br />Kayanikkal House, Mathottam)
             </p>
           </ScrollSection>
@@ -232,7 +239,7 @@ export default function Home() {
                   <MapPin className="w-8 h-8 md:w-10 md:h-10 text-[#d4af37]" />
                   <span>City Palace Auditorium</span>
                 </div>
-                <span className="text-base md:text-lg text-emerald-800/80 uppercase tracking-[0.15em]">(B.C Road, Beypore)</span>
+                <span className="text-base md:text-lg text-emerald-800/80 uppercase tracking-[0.15em] font-serif">(B.C Road, Beypore)</span>
               </div>
 
               <a 
