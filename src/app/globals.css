@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --font-serif: var(--font-playfair);
-  --font-script: var(--font-great-vibes);
-  --font-arabic: var(--font-amiri);
+  --font-serif: var(--font-serif);
+  --font-script: var(--font-script);
+  --font-arabic: var(--font-arabic);
 }
 
 body {
