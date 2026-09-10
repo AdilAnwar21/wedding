@@ -86,7 +86,7 @@ export default function Home() {
               <h1 className="font-arabic text-6xl md:text-8xl text-[#d4af37] tracking-wider drop-shadow-lg">
                 السلام عليكم
               </h1>
-              <p className="font-serif text-lg md:text-xl text-[#d4af37]/80 tracking-[0.3em] uppercase">
+              <p className="font-serif text-lg md:text-xl text-[#d4af37] tracking-[0.3em] uppercase">
                 Bismillah
               </p>
             </motion.div>
@@ -137,7 +137,7 @@ export default function Home() {
                 <p className="uppercase tracking-[0.3em] text-xs md:text-sm text-emerald-900 font-bold">
                   In the name of Allah
                 </p>
-                <p className="uppercase tracking-[0.2em] text-[10px] md:text-xs text-emerald-900/70 font-medium">
+                <p className="uppercase tracking-[0.2em] text-[10px] md:text-xs text-emerald-900 font-medium">
                   The most Gracious, the most Merciful
                 </p>
               </div>
@@ -156,14 +156,14 @@ export default function Home() {
           <ScrollSection className="min-h-[70vh] text-center space-y-12">
             <div>
               <h3 className="text-2xl md:text-4xl font-bold text-emerald-900 font-serif tracking-wide">Mr. Noushad M.P & Mrs. Afsath P.K</h3>
-              <p className="text-base md:text-lg text-emerald-800/80 italic mt-4 leading-relaxed max-w-md mx-auto font-serif">
+              <p className="text-base md:text-lg text-emerald-900 italic mt-4 leading-relaxed max-w-md mx-auto font-serif">
                 (MP House, Padinjare Kunnath Parambu,<br />Meenchanda Gate)
               </p>
             </div>
             
             <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto" />
             
-            <p className="text-xl md:text-3xl text-emerald-900/90 leading-loose max-w-2xl font-serif px-4">
+            <p className="text-xl md:text-3xl text-emerald-900 leading-loose max-w-2xl font-serif px-4">
               Solicit your esteemed presence with family on the auspicious occasion of the marriage of our Son
             </p>
           </ScrollSection>
@@ -173,7 +173,7 @@ export default function Home() {
             <motion.div style={{ opacity: coupleOpacity }} className="w-full flex flex-col items-center justify-center">
               <div className="absolute top-0 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
               
-              <motion.h1 style={{ x: groomX }} className="font-script text-7xl md:text-[8rem] lg:text-[11rem] text-emerald-900 drop-shadow-sm text-center py-4 leading-none">
+              <motion.h1 style={{ x: groomX }} className="font-script text-7xl md:text-[8rem] lg:text-[11rem] text-emerald-900 drop-shadow-md text-center py-4 leading-none">
                 Muhammed<br className="md:hidden" /> Ridwan
               </motion.h1>
               
@@ -183,7 +183,7 @@ export default function Home() {
                 <div className="w-16 md:w-32 h-[1px] bg-[#d4af37]" />
               </div>
 
-              <motion.h1 style={{ x: brideX }} className="font-script text-7xl md:text-[8rem] lg:text-[11rem] text-emerald-900 drop-shadow-sm text-center py-4 leading-none">
+              <motion.h1 style={{ x: brideX }} className="font-script text-7xl md:text-[8rem] lg:text-[11rem] text-emerald-900 drop-shadow-md text-center py-4 leading-none">
                 Aneesha
               </motion.h1>
               
@@ -193,14 +193,14 @@ export default function Home() {
 
           {/* Section 4: Bride's Parents */}
           <ScrollSection className="min-h-[50vh] text-center">
-            <p className="text-lg md:text-xl text-emerald-800/80 italic max-w-lg mx-auto leading-relaxed font-serif">
+            <p className="text-lg md:text-xl text-emerald-900 italic max-w-lg mx-auto leading-relaxed font-serif">
               (D/o Mr. Muhammed Ashraf, Mrs. Saleena.P,<br />Kayanikkal House, Mathottam)
             </p>
           </ScrollSection>
 
           {/* Section 5: Date & Time */}
           <ScrollSection className="min-h-[80vh]">
-            <div className="relative w-full max-w-2xl mx-auto border border-[#d4af37]/40 bg-white/60 backdrop-blur-sm p-10 md:p-16 rounded-sm shadow-xl">
+            <div className="relative w-full max-w-2xl mx-auto border border-[#d4af37]/40 bg-white/90 backdrop-blur-sm p-10 md:p-16 rounded-sm shadow-xl">
               
               {/* Corner accents for the box */}
               <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-[#d4af37] -translate-x-1 -translate-y-1" />
@@ -243,7 +243,7 @@ export default function Home() {
                   <MapPin className="w-8 h-8 md:w-10 md:h-10 text-[#d4af37]" />
                   <span>City Palace Auditorium</span>
                 </div>
-                <span className="text-base md:text-lg text-emerald-800/80 uppercase tracking-[0.15em] font-serif">(B.C Road, Beypore)</span>
+                <span className="text-base md:text-lg text-emerald-900 uppercase tracking-[0.15em] font-serif">(B.C Road, Beypore)</span>
               </div>
 
               <a 
@@ -273,7 +273,7 @@ export default function Home() {
               <p className="text-emerald-900 font-bold text-xl md:text-2xl uppercase tracking-[0.15em] mb-10 leading-relaxed">
                 Marwan, Hammad, Hadhi, & Dear & Near
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-emerald-800/90 font-medium">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-emerald-900 font-medium">
                 <span className="uppercase text-base tracking-[0.2em] text-[#d4af37]">Contact</span>
                 <span className="text-xl md:text-2xl tracking-wider font-serif">9847651902</span>
                 <span className="hidden sm:inline text-[#d4af37]">•</span>
