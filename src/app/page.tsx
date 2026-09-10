@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
-import { MapPin, Clock, ChevronDown } from "lucide-react";
+import { MapPin, Clock, ChevronDown, Heart } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 
 // Reusable component for continuous scroll animations with physics (spring)
@@ -62,6 +62,10 @@ export default function Home() {
   const coupleOpacity = useTransform(smoothCouple, [0, 1], [0, 1]);
   const groomX = useTransform(smoothCouple, [0, 1], [-120, 0]);
   const brideX = useTransform(smoothCouple, [0, 1], [120, 0]);
+
+  // Global scroll progress for the Heart animation
+  const { scrollYProgress: globalScroll } = useScroll();
+  const heartLeft = useTransform(globalScroll, [0, 1], ["0%", "100%"]);
 
   return (
     <>
@@ -279,6 +283,30 @@ export default function Home() {
           </ScrollSection>
 
         </div>
+
+        {/* Heart Scroll Progress Bar */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: !loading ? 1 : 0 }}
+          transition={{ delay: 2.5, duration: 1 }}
+          className="fixed bottom-6 left-0 w-full px-8 md:px-16 z-40 pointer-events-none"
+        >
+          <div className="relative w-full h-[1px] bg-[#d4af37]/30 flex items-center max-w-5xl mx-auto">
+            {/* Left Heart (Moving) */}
+            <motion.div 
+              style={{ left: heartLeft, x: "-50%" }} 
+              className="absolute"
+            >
+              <Heart className="w-5 h-5 md:w-6 md:h-6 text-[#d4af37] fill-[#d4af37] drop-shadow-md" />
+            </motion.div>
+            
+            {/* Right Heart (Stationary at the end) */}
+            <div className="absolute right-0 translate-x-1/2">
+              <Heart className="w-5 h-5 md:w-6 md:h-6 text-[#d4af37] fill-transparent stroke-[1.5px]" />
+            </div>
+          </div>
+        </motion.div>
+
       </main>
     </>
   );
