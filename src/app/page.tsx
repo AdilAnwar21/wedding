@@ -2,31 +2,51 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { MapPin, Calendar, Clock } from "lucide-react";
+import { MapPin, Clock, ChevronDown } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Show loader for 2.5 seconds
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2800);
     return () => clearTimeout(timer);
   }, []);
 
-  const fadeInUp: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" as const } },
+  const revealUp: Variants = {
+    hidden: { opacity: 0, y: 80 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } 
+    },
   };
 
-  const lineVariants: Variants = {
-    hidden: { width: 0 },
-    visible: { width: "100%", transition: { duration: 1.2, ease: "easeInOut" as const } }
+  const revealScale: Variants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      transition: { duration: 1.4, ease: [0.16, 1, 0.3, 1] } 
+    },
   };
 
   const MAP_URL = "https://www.google.com/maps/dir//City+Palace,+City+Place,+Wadakkanchery+Rd,+near+BSNL+Office,+Kechery,+Thrissur,+Eranellur,+Kerala+680501/@11.2145924,75.7952836,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3ba7eb031193fd99:0x6d037e92a97fc40!2m2!1d76.1227409!2d10.619994?entry=ttu&g_ep=EgoyMDI2MDkwNi4wIKXMDSoASAFQAw%3D%3D";
+
+  // Reusable component for scroll sections
+  const ScrollSection = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-25%" }}
+      variants={revealUp}
+      className={`w-full flex flex-col items-center justify-center px-6 ${className}`}
+    >
+      {children}
+    </motion.section>
+  );
 
   return (
     <>
@@ -42,17 +62,17 @@ export default function Home() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 1.2, ease: "easeOut" as const }}
-              className="text-center space-y-6"
+              className="text-center space-y-8"
             >
               <h1 className="font-arabic text-6xl md:text-8xl text-[#d4af37] tracking-wider drop-shadow-lg">
                 السلام عليكم
               </h1>
-              <p className="font-serif text-lg md:text-xl text-[#d4af37]/80 tracking-[0.2em] uppercase">
+              <p className="font-serif text-lg md:text-xl text-[#d4af37]/80 tracking-[0.3em] uppercase">
                 Bismillah
               </p>
             </motion.div>
             <motion.div
-              className="absolute bottom-20 w-32 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent"
+              className="absolute bottom-20 w-48 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 1.5, delay: 0.5 }}
@@ -61,159 +81,199 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <main className="min-h-screen py-8 md:py-16 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        {/* Main Card Container */}
-        <div className="relative max-w-4xl w-full bg-white shadow-2xl overflow-hidden rounded-sm">
-          
-          {/* Gold Border Frame */}
-          <div className="absolute inset-3 md:inset-5 border-[1px] border-[#d4af37]/40 pointer-events-none z-10" />
-          <div className="absolute inset-4 md:inset-6 border-[1px] border-[#d4af37]/20 pointer-events-none z-10" />
-
-          {/* Decorative Corner SVGs (Gold/Emerald) */}
-          <div className="absolute top-0 left-0 w-40 md:w-64 h-40 md:h-64 opacity-80 pointer-events-none">
-            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="fill-[#115e59]">
-              <path d="M0,0 L200,0 C200,110.46 110.46,200 0,200 L0,0 Z" opacity="0.1"/>
-              <path d="M0,0 L150,0 C150,82.84 82.84,150 0,150 L0,0 Z" opacity="0.2"/>
-              <path d="M0,0 L100,0 C100,55.23 55.23,100 0,100 L0,0 Z" fill="#d4af37" opacity="0.3"/>
-            </svg>
-          </div>
-          <div className="absolute bottom-0 right-0 w-40 md:w-64 h-40 md:h-64 opacity-80 pointer-events-none rotate-180">
-            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="fill-[#115e59]">
-              <path d="M0,0 L200,0 C200,110.46 110.46,200 0,200 L0,0 Z" opacity="0.1"/>
-              <path d="M0,0 L150,0 C150,82.84 82.84,150 0,150 L0,0 Z" opacity="0.2"/>
-              <path d="M0,0 L100,0 C100,55.23 55.23,100 0,100 L0,0 Z" fill="#d4af37" opacity="0.3"/>
-            </svg>
-          </div>
-
-          <div className="relative z-20 py-20 md:py-32 px-6 md:px-16 text-center flex flex-col items-center">
+      <main className="relative min-h-screen bg-transparent overflow-hidden">
+        
+        {/* Fixed Background Elements (Frames stay on screen while content scrolls) */}
+        <div className="fixed inset-0 pointer-events-none z-0 p-4 md:p-8">
+          <div className="w-full h-full border-[1px] border-[#d4af37]/40 rounded-sm relative">
+            <div className="absolute inset-2 border-[1px] border-[#d4af37]/20" />
             
-            {/* Header */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeInUp} className="space-y-3 mb-16">
-              <h2 className="font-arabic text-3xl md:text-4xl text-[#d4af37]">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</h2>
-              <p className="uppercase tracking-[0.25em] text-xs md:text-sm text-emerald-900/60 font-semibold">
-                In the name of Allah
-                <br />
-                The most Gracious, the most Merciful
-              </p>
-            </motion.div>
+            {/* Top Left Corner */}
+            <div className="absolute -top-1 -left-1 w-24 h-24 md:w-32 md:h-32 opacity-80">
+              <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="fill-[#115e59]">
+                <path d="M0,0 L200,0 C200,110.46 110.46,200 0,200 L0,0 Z" opacity="0.1"/>
+                <path d="M0,0 L150,0 C150,82.84 82.84,150 0,150 L0,0 Z" opacity="0.2"/>
+                <path d="M0,0 L100,0 C100,55.23 55.23,100 0,100 L0,0 Z" fill="#d4af37" opacity="0.4"/>
+              </svg>
+            </div>
+            {/* Bottom Right Corner */}
+            <div className="absolute -bottom-1 -right-1 w-24 h-24 md:w-32 md:h-32 opacity-80 rotate-180">
+              <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="fill-[#115e59]">
+                <path d="M0,0 L200,0 C200,110.46 110.46,200 0,200 L0,0 Z" opacity="0.1"/>
+                <path d="M0,0 L150,0 C150,82.84 82.84,150 0,150 L0,0 Z" opacity="0.2"/>
+                <path d="M0,0 L100,0 C100,55.23 55.23,100 0,100 L0,0 Z" fill="#d4af37" opacity="0.4"/>
+              </svg>
+            </div>
+          </div>
+        </div>
 
-            {/* Groom's Parents */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeInUp} className="mb-12">
-              <h3 className="text-xl md:text-2xl font-bold text-emerald-900 font-serif">Mr. Noushad M.P & Mrs. Afsath P.K</h3>
-              <p className="text-sm md:text-base text-emerald-800/70 italic mt-2 leading-relaxed">
-                (MP House, Padinjare Kunnath Parambu<br />Meenchanda Gate)
-              </p>
-            </motion.div>
-
-            {/* Invitation Request */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeInUp} className="mb-16 relative w-full flex justify-center">
-              <p className="text-base md:text-lg text-emerald-900/90 leading-relaxed max-w-xl font-medium px-4">
-                Solicit your esteemed presence with family on the auspicious occasion of the marriage of our Son
-              </p>
-            </motion.div>
-
-            {/* The Couple */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeInUp} className="w-full py-8 my-8 relative flex flex-col items-center justify-center">
-              <motion.div variants={lineVariants} className="absolute top-0 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
-              
-              <h1 className="font-script text-6xl md:text-8xl lg:text-9xl text-emerald-900 drop-shadow-sm my-6 py-2">
-                Muhammed Ridwan
-              </h1>
-              
-              <div className="flex items-center gap-4 my-2">
-                <div className="w-12 h-[1px] bg-[#d4af37]" />
-                <span className="font-serif text-lg md:text-xl text-[#d4af37] italic">with</span>
-                <div className="w-12 h-[1px] bg-[#d4af37]" />
-              </div>
-
-              <h1 className="font-script text-6xl md:text-8xl lg:text-9xl text-emerald-900 drop-shadow-sm my-6 py-2">
-                Aneesha
-              </h1>
-              
-              <motion.div variants={lineVariants} className="absolute bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
-            </motion.div>
-
-            {/* Bride's Parents */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeInUp} className="mb-20 mt-8">
-              <p className="text-sm md:text-base text-emerald-800/70 italic max-w-md mx-auto leading-relaxed">
-                (D/o Mr. Muhammed Ashraf, Mrs. Saleena.P,<br />Kayanikkal House, Mathottam)
-              </p>
-            </motion.div>
-
-            {/* Date and Time (Boxed elegant design) */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeInUp} className="mb-20 w-full max-w-lg">
-              <div className="border border-[#d4af37]/30 bg-[#d4af37]/5 p-8 md:p-10 rounded-sm">
-                <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
-                  <div className="text-center md:text-right">
-                    <p className="text-sm md:text-base uppercase tracking-[0.2em] font-bold text-emerald-900">Sunday</p>
-                    <p className="text-xs text-[#d4af37] tracking-widest mt-1">2026</p>
-                  </div>
-                  
-                  <div className="text-6xl md:text-7xl font-bold font-serif gold-gradient">
-                    18
-                  </div>
-                  
-                  <div className="text-center md:text-left">
-                    <p className="text-sm md:text-base uppercase tracking-[0.2em] font-bold text-emerald-900">October</p>
-                    <p className="text-xs text-[#d4af37] tracking-widest mt-1">(1448 JA AWWAL 7)</p>
-                  </div>
-                </div>
-
-                <div className="w-full h-[1px] bg-[#d4af37]/20 my-8" />
-
-                <div className="flex flex-col items-center gap-4 text-emerald-900">
-                  <div className="flex items-center gap-3 font-medium">
-                    <Clock className="w-5 h-5 text-[#d4af37]" />
-                    <span className="text-lg">12:00 noon &mdash; 3:00 pm</span>
-                  </div>
-                  <div className="flex flex-col items-center gap-2 mt-2">
-                    <div className="flex items-center gap-2 text-xl font-bold font-serif">
-                      <MapPin className="w-6 h-6 text-[#d4af37]" />
-                      <span>City Palace Auditorium</span>
-                    </div>
-                    <span className="text-sm text-emerald-800/70 uppercase tracking-widest">(B.C Road, Beypore)</span>
-                  </div>
-                </div>
+        {/* Scrolling Content container */}
+        <div className="relative z-10 w-full flex flex-col">
+          
+          {/* Section 1: Intro */}
+          <section className="min-h-screen flex flex-col items-center justify-center text-center relative px-4">
+            <motion.div
+              initial="hidden"
+              animate={!loading ? "visible" : "hidden"}
+              variants={revealUp}
+              className="space-y-6"
+            >
+              <h2 className="font-arabic text-4xl md:text-5xl text-[#d4af37]">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</h2>
+              <div className="space-y-2">
+                <p className="uppercase tracking-[0.3em] text-xs md:text-sm text-emerald-900/80 font-bold">
+                  In the name of Allah
+                </p>
+                <p className="uppercase tracking-[0.2em] text-[10px] md:text-xs text-emerald-900/60 font-medium">
+                  The most Gracious, the most Merciful
+                </p>
               </div>
             </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: !loading ? 1 : 0 }}
+              transition={{ delay: 2, duration: 1 }}
+              className="absolute bottom-16 flex flex-col items-center gap-2 text-[#d4af37] animate-bounce"
+            >
+              <span className="text-[10px] uppercase tracking-[0.2em] font-medium opacity-60">Scroll to reveal</span>
+              <ChevronDown className="w-5 h-5 opacity-60" />
+            </motion.div>
+          </section>
 
-            {/* Location & QR */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeInUp} className="mb-20 flex flex-col items-center">
+          {/* Section 2: Groom's Parents & Invitation */}
+          <ScrollSection className="min-h-[70vh] text-center space-y-12">
+            <div>
+              <h3 className="text-2xl md:text-3xl font-bold text-emerald-900 font-serif tracking-wide">Mr. Noushad M.P & Mrs. Afsath P.K</h3>
+              <p className="text-sm md:text-base text-emerald-800/60 italic mt-4 leading-relaxed max-w-md mx-auto">
+                (MP House, Padinjare Kunnath Parambu,<br />Meenchanda Gate)
+              </p>
+            </div>
+            
+            <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto" />
+            
+            <p className="text-lg md:text-2xl text-emerald-900/90 leading-loose max-w-2xl font-serif px-4">
+              Solicit your esteemed presence with family on the auspicious occasion of the marriage of our Son
+            </p>
+          </ScrollSection>
+
+          {/* Section 3: The Couple */}
+          <motion.section
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-30%" }}
+            variants={revealScale}
+            className="min-h-[90vh] flex flex-col items-center justify-center py-20 px-4 relative w-full overflow-hidden"
+          >
+            <div className="absolute top-0 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
+            
+            <h1 className="font-script text-7xl md:text-9xl lg:text-[10rem] text-emerald-900 drop-shadow-sm text-center py-4 leading-tight">
+              Muhammed<br className="md:hidden" /> Ridwan
+            </h1>
+            
+            <div className="flex items-center gap-6 my-8 md:my-12">
+              <div className="w-16 md:w-32 h-[1px] bg-[#d4af37]/50" />
+              <span className="font-serif text-xl md:text-3xl text-[#d4af37] italic">with</span>
+              <div className="w-16 md:w-32 h-[1px] bg-[#d4af37]/50" />
+            </div>
+
+            <h1 className="font-script text-7xl md:text-9xl lg:text-[10rem] text-emerald-900 drop-shadow-sm text-center py-4 leading-tight">
+              Aneesha
+            </h1>
+            
+            <div className="absolute bottom-0 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
+          </motion.section>
+
+          {/* Section 4: Bride's Parents */}
+          <ScrollSection className="min-h-[50vh] text-center">
+            <p className="text-base md:text-lg text-emerald-800/70 italic max-w-lg mx-auto leading-relaxed">
+              (D/o Mr. Muhammed Ashraf, Mrs. Saleena.P,<br />Kayanikkal House, Mathottam)
+            </p>
+          </ScrollSection>
+
+          {/* Section 5: Date & Time */}
+          <ScrollSection className="min-h-[80vh]">
+            <div className="relative w-full max-w-2xl mx-auto border border-[#d4af37]/40 bg-white/50 backdrop-blur-sm p-10 md:p-16 rounded-sm shadow-xl">
+              
+              {/* Corner accents for the box */}
+              <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-[#d4af37] -translate-x-1 -translate-y-1" />
+              <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-[#d4af37] translate-x-1 -translate-y-1" />
+              <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-[#d4af37] -translate-x-1 translate-y-1" />
+              <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#d4af37] translate-x-1 translate-y-1" />
+
+              <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16">
+                <div className="text-center md:text-right">
+                  <p className="text-lg md:text-xl uppercase tracking-[0.2em] font-bold text-emerald-900">Sunday</p>
+                  <p className="text-sm text-[#d4af37] tracking-widest mt-2">2026</p>
+                </div>
+                
+                <div className="text-7xl md:text-8xl font-bold font-serif gold-gradient">
+                  18
+                </div>
+                
+                <div className="text-center md:text-left">
+                  <p className="text-lg md:text-xl uppercase tracking-[0.2em] font-bold text-emerald-900">October</p>
+                  <p className="text-xs md:text-sm text-[#d4af37] tracking-[0.1em] mt-2 whitespace-nowrap">(1448 JA AWWAL 7)</p>
+                </div>
+              </div>
+
+              <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#d4af37]/40 to-transparent my-10" />
+
+              <div className="flex flex-col items-center gap-6 text-emerald-900">
+                <div className="flex items-center gap-4 font-medium text-lg md:text-xl">
+                  <Clock className="w-5 h-5 md:w-6 md:h-6 text-[#d4af37]" />
+                  <span>12:00 noon &mdash; 3:00 pm</span>
+                </div>
+              </div>
+            </div>
+          </ScrollSection>
+
+          {/* Section 6: Location & Footer */}
+          <ScrollSection className="min-h-screen pt-12 pb-24 flex flex-col justify-between">
+            <div className="flex flex-col items-center mb-16">
+              <div className="flex flex-col items-center gap-3 mt-4 mb-10 text-center">
+                <div className="flex items-center gap-3 text-2xl md:text-3xl font-bold font-serif text-emerald-900">
+                  <MapPin className="w-8 h-8 text-[#d4af37]" />
+                  <span>City Palace Auditorium</span>
+                </div>
+                <span className="text-sm md:text-base text-emerald-800/70 uppercase tracking-[0.15em]">(B.C Road, Beypore)</span>
+              </div>
+
               <a 
                 href={MAP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex flex-col items-center transition-transform hover:scale-105"
               >
-                <div className="p-4 bg-white shadow-xl border border-[#d4af37]/20 rounded-xl inline-block transition-shadow group-hover:shadow-[#d4af37]/20">
+                <div className="p-5 bg-white shadow-2xl border border-[#d4af37]/30 rounded-xl inline-block transition-shadow group-hover:shadow-[#d4af37]/40">
                   <QRCodeSVG 
                     value={MAP_URL} 
-                    size={140} 
+                    size={160} 
                     fgColor="#064e3b" 
                     level="Q"
                   />
                 </div>
-                <div className="mt-6 px-8 py-3 bg-[#d4af37] text-white rounded-full text-sm font-bold uppercase tracking-widest shadow-md group-hover:bg-[#bf953f] transition-colors">
+                <div className="mt-8 px-10 py-4 bg-[#d4af37] text-white rounded-full text-sm font-bold uppercase tracking-widest shadow-lg group-hover:bg-[#bf953f] group-hover:shadow-xl transition-all">
                   Get Directions
                 </div>
               </a>
-            </motion.div>
+            </div>
 
-            {/* Footer info */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeInUp} className="text-center border-t border-[#d4af37]/30 pt-12 w-full max-w-2xl">
-              <p className="text-[#d4af37] italic font-serif text-lg md:text-xl mb-4">Sharing the happiness</p>
-              <p className="text-emerald-900 font-bold text-lg md:text-xl uppercase tracking-widest mb-6">
+            {/* Footer */}
+            <div className="text-center w-full max-w-3xl mt-auto">
+              <div className="w-32 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto mb-8" />
+              <p className="text-[#d4af37] italic font-serif text-xl md:text-2xl mb-6">Sharing the happiness</p>
+              <p className="text-emerald-900 font-bold text-lg md:text-xl uppercase tracking-[0.15em] mb-8 leading-relaxed">
                 Marwan, Hammad, Hadhi, & Dear & Near
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-emerald-800/80 font-medium">
-                <span className="uppercase text-xs tracking-[0.2em] text-[#d4af37]">Contact</span>
-                <span className="text-lg">9847651902</span>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-emerald-800/90 font-medium">
+                <span className="uppercase text-sm tracking-[0.2em] text-[#d4af37]">Contact</span>
+                <span className="text-lg md:text-xl tracking-wider">9847651902</span>
                 <span className="hidden sm:inline text-[#d4af37]">•</span>
-                <span className="text-lg">9947514544</span>
+                <span className="text-lg md:text-xl tracking-wider">9947514544</span>
               </div>
-            </motion.div>
+            </div>
+          </ScrollSection>
 
-          </div>
         </div>
       </main>
     </>
