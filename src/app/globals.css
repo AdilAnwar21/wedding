@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: var(--font-playfair);
+  --font-script: var(--font-great-vibes);
+}
+
+body {
+  font-family: var(--font-serif), serif;
+  scroll-behavior: smooth;
+}
